@@ -1,0 +1,18 @@
+name: Reset Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout reset branch
+        uses: actions/checkout@v4
+        with:
+          ref: reset
+          fetch-depth: 0
+
+      - name: Reset main to reset branch
+        run: |
+          git push origin refs/heads/reset:refs/heads/main --force
