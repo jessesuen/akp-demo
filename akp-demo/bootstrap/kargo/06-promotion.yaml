@@ -20,4 +20,4 @@ spec:
             images:
             - key: image.tag
               value: ${{ imageFrom("ghcr.io/akuity/guestbook").Tag }}
-          repoURL: https://github.com/akuity/akp-demo.git
+          repoURL: https://github.com/jessesuen/akp-demo.git

@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   sourceRepos:
-  - https://github.com/akuity/akp-demo.git
+  - https://github.com/jessesuen/akp-demo.git
   destinations:
   - namespace: akp-demo
     name: demo

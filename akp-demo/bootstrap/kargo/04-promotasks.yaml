@@ -14,7 +14,7 @@ spec:
             images:
             - key: image.tag
               value: ${{ imageFrom("ghcr.io/akuity/guestbook").Tag }}
-          repoURL: https://github.com/akuity/akp-demo.git
+          repoURL: https://github.com/jessesuen/akp-demo.git
 
 ---
 # This promotion will only sync the application without updating the image
@@ -30,4 +30,4 @@ spec:
       apps:
       - name: guestbook-${{ ctx.stage }}
         sources:
-        - repoURL: https://github.com/akuity/akp-demo.git
+        - repoURL: https://github.com/jessesuen/akp-demo.git
