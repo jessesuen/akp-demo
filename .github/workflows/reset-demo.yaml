@@ -16,3 +16,15 @@ jobs:
       - name: Reset main to reset branch
         run: |
           git push origin refs/heads/reset:refs/heads/main --force
+
+      - name: Delete resources
+        env:
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+          ARGOCD_SERVER: ${{ vars.ARGOCD_SERVER }}
+          ARGOCD_OPTS: --grpc-web
+        run: |
+          curl -sSL -o /usr/local/bin/argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+          chmod +x /usr/local/bin/argocd
+          argocd app delete-resource guestbook-prod-oom --kind Deployment --resource-name oom-demo || true
+          argocd app delete-resource akp-demo-bootstrap-kargo --kind Stage --resource-name prod-oom || true
+          argocd app sync akp-demo-bootstrap-kargo
