@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pipeline-demo-dev
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: pipeline-demo:dev
+spec:
+  project: pipeline-demo
+  source:
+    repoURL: https://github.com/jessesuen/akp-demo.git
+    targetRevision: HEAD
+    path: charts/nginx
+    helm:
+      releaseName: dev
+  destination:
+    name: demo
+    namespace: pipeline-demo
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pipeline-demo-staging
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: pipeline-demo:staging
+spec:
+  project: pipeline-demo
+  source:
+    repoURL: https://github.com/jessesuen/akp-demo.git
+    targetRevision: HEAD
+    path: charts/nginx
+    helm:
+      releaseName: staging
+  destination:
+    name: demo
+    namespace: pipeline-demo
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pipeline-demo-prod
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: pipeline-demo:prod
+spec:
+  project: pipeline-demo
+  source:
+    repoURL: https://github.com/jessesuen/akp-demo.git
+    targetRevision: HEAD
+    path: charts/nginx
+    helm:
+      releaseName: prod
+  destination:
+    name: demo
+    namespace: pipeline-demo
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

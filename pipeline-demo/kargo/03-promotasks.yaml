@@ -1,0 +1,17 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote
+  namespace: pipeline-demo
+spec:
+  steps:
+  - uses: argocd-update
+    config:
+      apps:
+      - name: pipeline-demo-${{ ctx.stage }}
+        sources:
+        - helm:
+            images:
+            - key: image.tag
+              value: ${{ imageFrom("public.ecr.aws/nginx/nginx").Tag }}
+          repoURL: https://github.com/jessesuen/akp-demo.git

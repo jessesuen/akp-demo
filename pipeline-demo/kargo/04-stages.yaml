@@ -1,0 +1,68 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: pipeline-demo
+  annotations:
+    kargo.akuity.io/argocd-context: '[{"name":"pipeline-demo-dev","namespace":"argocd"}]'
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: nginx
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: promote
+
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: staging
+  namespace: pipeline-demo
+  annotations:
+    kargo.akuity.io/argocd-context: '[{"name":"pipeline-demo-staging","namespace":"argocd"}]'
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: nginx
+    sources:
+      stages:
+      - dev
+      autoPromotionOptions:
+        selectionPolicy: MatchUpstream
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: promote
+
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod
+  namespace: pipeline-demo
+  annotations:
+    kargo.akuity.io/argocd-context: '[{"name":"pipeline-demo-prod","namespace":"argocd"}]'
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: nginx
+    sources:
+      stages:
+      - staging
+      autoPromotionOptions:
+        selectionPolicy: MatchUpstream
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: promote

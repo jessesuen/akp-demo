@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: pipeline-demo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  sourceRepos:
+  - https://github.com/jessesuen/akp-demo.git
+  destinations:
+  - namespace: pipeline-demo
+    name: demo
+  - name: kargo
+    namespace: "*"
+  clusterResourceWhitelist:
+  - group: ""
+    kind: Namespace
+  - group: kargo.akuity.io
+    kind: "*"
+  

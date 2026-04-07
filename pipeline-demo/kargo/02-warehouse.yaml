@@ -1,0 +1,13 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: nginx
+  namespace: pipeline-demo
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  subscriptions:
+  - image:
+      repoURL: public.ecr.aws/nginx/nginx
+      allowTagsRegexes:
+      - ^[0-9]+\.[0-9]+\.[0-9]+$
