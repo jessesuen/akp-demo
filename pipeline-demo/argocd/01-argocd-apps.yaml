@@ -47,10 +47,10 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pipeline-demo-prod
+  name: pipeline-demo-prod-eu
   namespace: argocd
   annotations:
-    kargo.akuity.io/authorized-stage: pipeline-demo:prod
+    kargo.akuity.io/authorized-stage: pipeline-demo:prod-eu
 spec:
   project: pipeline-demo
   source:
@@ -58,7 +58,30 @@ spec:
     targetRevision: HEAD
     path: charts/nginx
     helm:
-      releaseName: prod
+      releaseName: prod-eu
+  destination:
+    name: demo
+    namespace: pipeline-demo
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pipeline-demo-prod-us
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: pipeline-demo:prod-us
+spec:
+  project: pipeline-demo
+  source:
+    repoURL: https://github.com/jessesuen/akp-demo.git
+    targetRevision: HEAD
+    path: charts/nginx
+    helm:
+      releaseName: prod-us
   destination:
     name: demo
     namespace: pipeline-demo

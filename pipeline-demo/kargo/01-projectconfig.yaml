@@ -8,8 +8,6 @@ metadata:
 spec:
   promotionPolicies:
   - stageSelector:
-      name: staging
-    autoPromotionEnabled: true
-  - stageSelector:
-      name: prod
+      matchLabels:
+        autopromote: "true"
     autoPromotionEnabled: true

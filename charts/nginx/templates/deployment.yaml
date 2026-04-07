@@ -6,6 +6,7 @@ metadata:
     app: {{ include "nginx.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: {{ include "nginx.fullname" . }}
