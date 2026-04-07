@@ -9,7 +9,7 @@ spec:
   project: pipeline-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/nginx
     helm:
       releaseName: dev
@@ -32,7 +32,7 @@ spec:
   project: pipeline-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/nginx
     helm:
       releaseName: staging
@@ -55,7 +55,7 @@ spec:
   project: pipeline-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/nginx
     helm:
       releaseName: prod-eu
@@ -78,7 +78,7 @@ spec:
   project: pipeline-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/nginx
     helm:
       releaseName: prod-us

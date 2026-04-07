@@ -9,7 +9,7 @@ spec:
   project: akp-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/guestbook
     helm:
       releaseName: dev
@@ -34,7 +34,7 @@ spec:
   project: akp-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/guestbook
     helm:
       releaseName: staging
@@ -59,7 +59,7 @@ spec:
   project: akp-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts/guestbook
     helm:
       releaseName: prod
@@ -84,7 +84,7 @@ spec:
   project: akp-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: oom-demo/
   destination:
     name: demo
@@ -105,7 +105,7 @@ spec:
   project: akp-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: HEAD
+    targetRevision: main
     path: crashloop-demo/
   destination:
     name: demo
