@@ -27,4 +27,21 @@ jobs:
           chmod +x /usr/local/bin/argocd
           argocd app delete-resource guestbook-prod-oom --kind Deployment --resource-name oom-demo || true
           argocd app delete-resource akp-demo-bootstrap-kargo --kind Stage --resource-name prod-oom || true
-          argocd app sync akp-demo-bootstrap-kargo
+          for i in $(seq 1 5); do
+            argocd app sync akp-demo-bootstrap-kargo && break
+            echo "Sync attempt $i failed, retrying in 8s..."
+            sleep 8
+          done
+          argocd proj create -f ./pipeline-demo/argocd/00-project.yaml --upsert
+          argocd app create -f ./pipeline-demo/argocd/01-argocd-apps.yaml --upsert
+
+      - name: Reset Kargo
+        env:
+          KARGO_API_TOKEN: ${{ secrets.KARGO_API_TOKEN }}
+          KARGO_API_ADDRESS: ${{ vars.KARGO_API_ADDRESS }}
+        run: |
+          curl -L -o /usr/local/bin/kargo https://github.com/akuity/kargo/releases/download/v1.9.5/kargo-linux-amd64
+          chmod +x /usr/local/bin/kargo
+          kargo delete stage --project pipeline-demo dev staging prod-eu prod-us || true
+          kargo apply -R -f ./pipeline-demo/kargo
+          kargo promote --project=pipeline-demo --freight-alias=solid-molly --stage=dev
