@@ -35,6 +35,26 @@ jobs:
           argocd proj create -f ./pipeline-demo/argocd/00-project.yaml --upsert
           argocd app create -f ./pipeline-demo/argocd/01-argocd-apps.yaml --upsert
 
+      - name: Delete AI conversations
+        env:
+          ARGOCD_SERVER: ${{ vars.ARGOCD_SERVER }}
+          KUBEVISION_USERNAME: ${{ secrets.KUBEVISION_USERNAME }}
+          KUBEVISION_PASSWORD: ${{ secrets.KUBEVISION_PASSWORD }}
+          AKUITY_ORG_ID: ${{ vars.AKUITY_ORG_ID }}
+        run: |
+          BASE_URL="https://${ARGOCD_SERVER}/ext-api/v1/argocd/extensions/kubevision/orgs/${AKUITY_ORG_ID}/ai/conversations"
+          INSTANCE_ID="${ARGOCD_SERVER#https://}"
+          INSTANCE_ID="${INSTANCE_ID%%.*}"
+
+          for id in $(curl -sSL "${BASE_URL}?instanceId=${INSTANCE_ID}&limit=50" \
+              -u "${KUBEVISION_USERNAME}:${KUBEVISION_PASSWORD}" \
+              -H 'x-platform: argocd' | jq -r '.conversations[].id'); do
+            curl -sSL -X DELETE "${BASE_URL}/${id}?instanceId=${INSTANCE_ID}" \
+              -u "${KUBEVISION_USERNAME}:${KUBEVISION_PASSWORD}" \
+              -H 'x-platform: argocd'
+            echo "Deleted conversation: ${id}"
+          done
+
       - name: Reset Kargo
         env:
           KARGO_API_TOKEN: ${{ secrets.KARGO_API_TOKEN }}
@@ -44,4 +64,5 @@ jobs:
           chmod +x /usr/local/bin/kargo
           kargo delete stage --project pipeline-demo dev staging prod-eu prod-us || true
           kargo apply -R -f ./pipeline-demo/kargo
+          sleep 4
           kargo promote --project=pipeline-demo --freight-alias=solid-molly --stage=dev
