@@ -9,7 +9,7 @@ spec:
   project: akp-demo
   source:
     repoURL: https://github.com/jessesuen/akp-demo.git
-    targetRevision: main
+    targetRevision: master
     path: akp-demo/bootstrap/kargo
   destination:
     name: kargo
